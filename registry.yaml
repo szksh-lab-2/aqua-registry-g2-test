@@ -1,0 +1,11 @@
+type: github_release
+repo_owner: AGWA
+repo_name: git-crypt
+description: Transparent file encryption in git
+version_overrides:
+  - version_constraint: "true"
+    replacements:
+      amd64: x86_64
+  - version_constraint: Version == "0.8.0"
+    replacements:
+      amd64: x86_64
