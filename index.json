@@ -7,6 +7,10 @@
     {
       "name": "Adembc/lazyssh",
       "description": "A terminal-based SSH manager inspired by lazydocker and k9s - Written in go"
+    },
+    {
+      "name": "AlexNabokikh/tfsort",
+      "description": "A CLI utility to sort Terraform variables and outputs"
     }
   ]
 }
