@@ -1,0 +1,8 @@
+{
+  "packages": [
+    {
+      "name": "1xyz/pryrite",
+      "description": "Pryrite, interactively execute shell code blocks in a markdown file"
+    }
+  ]
+}
