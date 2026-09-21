@@ -1,0 +1,50 @@
+---
+name: ar2
+# Run ar2 the way it is meant to run: as GitHub Actions, so that its commits are
+# signed. A commit made through the Git data API is signed when the caller is
+# GitHub Actions or a GitHub App, and left unsigned for a user access token, so a
+# run from a laptop can't produce something a signature ruleset accepts.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: how many package versions to generate in this run
+        required: false
+        default: "2"
+      ar2_ref:
+        description: the ar2 ref to build
+        required: false
+        default: main
+permissions: {}
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      # Creating the package branch and committing to the head branch.
+      contents: write
+      # Opening the pull request and turning on auto-merge.
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          repository: szksh-lab-2/ar2
+          ref: ${{ inputs.ar2_ref }}
+      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5.5.0
+        with:
+          go-version-file: go.mod
+      # The state only orders the work, and generating it takes about two minutes,
+      # so it is built here rather than pulled from the container registry. That
+      # keeps this workflow from needing the packages permission.
+      - run: go run ./cmd/ar2 init --output state.json
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: |
+          go run ./cmd/ar2 run \
+            --state state.json \
+            --limit "$LIMIT" \
+            --g2-owner "${GITHUB_REPOSITORY%/*}" \
+            --g2-repo "${GITHUB_REPOSITORY#*/}"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          LIMIT: ${{ inputs.limit }}
