@@ -1,0 +1,14 @@
+type: github_release
+repo_owner: Arriven
+repo_name: db1000n
+version_overrides:
+  - version_constraint: semver("> 0.9.23")
+  - version_constraint: semver("> 0.8.19")
+  - version_constraint: semver("> 0.8.12")
+  - version_constraint: semver("> 0.8.5")
+  - version_constraint: semver("> 0.8.3")
+  - version_constraint: semver("> 0.7.2")
+  - version_constraint: semver("> 0.7.0")
+  - version_constraint: semver("<= 0.7.0")
+  - version_constraint: Version == "v0.8.6"
+  - version_constraint: Version == "v0.5.15"
