@@ -1,0 +1,17 @@
+type: github_release
+repo_owner: Aloxaf
+repo_name: silicon
+description: Create beautiful image of your source code
+replacements:
+  amd64: x86_64
+  darwin: apple-darwin
+  linux: unknown-linux-gnu
+  windows: pc-windows-msvc
+version_overrides:
+  - version_constraint: "true"
+    replacements:
+      amd64: x86_64
+      darwin: apple-darwin
+      linux: unknown-linux-gnu
+      windows: pc-windows-gnu
+  - version_constraint: semver("= 0.5.0")
