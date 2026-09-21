@@ -1,0 +1,6 @@
+type: github_release
+repo_owner: AlexNabokikh
+repo_name: tfsort
+description: A CLI utility to sort Terraform variables and outputs
+version_overrides:
+  - version_constraint: "true"
