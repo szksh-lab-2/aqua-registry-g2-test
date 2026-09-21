@@ -19,11 +19,13 @@ on:
         description: >
           where the state comes from. "ghcr" pushes it to the container registry
           and reads it back, which is how it works outside a test. "local" keeps
-          it in a file, which needs no packages permission.
+          it in a file, which needs no packages permission. "run-only" skips
+          'ar2 init' entirely, which is how a run behaves when the container
+          registry holds no state yet.
         required: false
         default: local
         type: choice
-        options: [local, ghcr]
+        options: [local, ghcr, run-only]
 permissions: {}
 jobs:
   run:
