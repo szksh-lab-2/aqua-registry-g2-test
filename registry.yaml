@@ -1,0 +1,17 @@
+type: github_release
+repo_owner: 8051Enthusiast
+repo_name: biodiff
+description: Hex diff viewer using alignment algorithms from biology
+version_overrides:
+  - version_constraint: "true"
+    replacements:
+      darwin: macos
+  - version_constraint: Version == "v0.2.1"
+    replacements:
+      darwin: macos
+  - version_constraint: semver("> 0.1.2")
+    replacements:
+      darwin: macos
+  - version_constraint: semver("<= 0.1.2")
+    replacements:
+      darwin: macos
