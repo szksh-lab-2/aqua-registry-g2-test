@@ -15,6 +15,15 @@ on:
         description: the ar2 ref to build
         required: false
         default: main
+      state:
+        description: >
+          where the state comes from. "ghcr" pushes it to the container registry
+          and reads it back, which is how it works outside a test. "local" keeps
+          it in a file, which needs no packages permission.
+        required: false
+        default: local
+        type: choice
+        options: [local, ghcr]
 permissions: {}
 jobs:
   run:
@@ -25,6 +34,9 @@ jobs:
       contents: write
       # Opening the pull request and turning on auto-merge.
       pull-requests: write
+      # Pushing the state to the container registry. The package doesn't have to
+      # exist first; pushing creates it.
+      packages: write
     steps:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
         with:
@@ -33,18 +45,25 @@ jobs:
       - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5.5.0
         with:
           go-version-file: go.mod
-      # The state only orders the work, and generating it takes about two minutes,
-      # so it is built here rather than pulled from the container registry. That
-      # keeps this workflow from needing the packages permission.
+      # The state only orders the work and takes about two minutes to build, so a
+      # test run can keep it in a file and skip the container registry entirely.
       - run: go run ./cmd/ar2 init --output state.json
+        if: inputs.state == 'local'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: go run ./cmd/ar2 init
+        if: inputs.state == 'ghcr'
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - run: |
-          go run ./cmd/ar2 run \
-            --state state.json \
-            --limit "$LIMIT" \
-            --g2-owner "${GITHUB_REPOSITORY%/*}" \
-            --g2-repo "${GITHUB_REPOSITORY#*/}"
+          args=(--limit "$LIMIT"
+                --g2-owner "${GITHUB_REPOSITORY%/*}"
+                --g2-repo "${GITHUB_REPOSITORY#*/}")
+          if [ "$STATE" = local ]; then
+            args+=(--state state.json)
+          fi
+          go run ./cmd/ar2 run "${args[@]}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
           LIMIT: ${{ inputs.limit }}
+          STATE: ${{ inputs.state }}
