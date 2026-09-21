@@ -19,6 +19,10 @@
     {
       "name": "Aloxaf/silicon",
       "description": "Create beautiful image of your source code"
+    },
+    {
+      "name": "Arata1202/ascdir",
+      "description": "Manage App Store Connect metadata, TestFlight distribution, and releases with safe CLI workflows"
     }
   ]
 }
