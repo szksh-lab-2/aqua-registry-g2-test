@@ -11,6 +11,10 @@
     {
       "name": "AlexNabokikh/tfsort",
       "description": "A CLI utility to sort Terraform variables and outputs"
+    },
+    {
+      "name": "AlexanderGrooff/mermaid-ascii",
+      "description": "Render Mermaid graphs inside your terminal"
     }
   ]
 }
