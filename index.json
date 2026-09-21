@@ -15,6 +15,10 @@
     {
       "name": "AlexanderGrooff/mermaid-ascii",
       "description": "Render Mermaid graphs inside your terminal"
+    },
+    {
+      "name": "Aloxaf/silicon",
+      "description": "Create beautiful image of your source code"
     }
   ]
 }
