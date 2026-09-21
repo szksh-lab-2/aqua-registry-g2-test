@@ -2,17 +2,19 @@
 name: index
 # Keep index.json in step with the package branches.
 #
-# Two ways in, because they cost differently. A branch that has just been created is
-# the only package that can be missing, so that path looks at nothing else. The
-# reconciliation looks at every branch, which is what catches a package the other path
-# missed: a create event that didn't fire, a run that failed, a pull request that was
-# never merged. Nothing else would notice.
+# 'ar2 run' adds a package to the catalogue as it takes it over, which is the one
+# moment a package can be new to it. This is the reconciliation: it looks at every
+# branch and adds whatever the catalogue doesn't have, which is what catches a
+# package whose run failed after committing its definition, or whose pull request
+# was never merged. Nothing else would notice.
 #
-# The reconciliation runs on demand here. It belongs on a schedule in the real
-# registry, where nobody is watching for a package that quietly never arrived.
+# It runs on demand here. It belongs on a schedule in the real registry, where nobody
+# is watching for a package that quietly never arrived.
+#
+# Not a create event: GitHub reads the workflow from the ref that was created, and a
+# package branch is an orphan carrying only the branch template. index.yaml lives on
+# main and would never be there, so the event fires and nothing runs.
 on:
-  # create can't be filtered in on:, so the job does it.
-  create:
   workflow_dispatch:
     inputs:
       ar2_ref:
@@ -22,11 +24,6 @@ on:
 permissions: {}
 jobs:
   index:
-    # A tag, or a branch that isn't a package's, has nothing to add. A manual run
-    # carries no ref of its own and always goes ahead.
-    if: |
-      github.event_name != 'create' ||
-      (github.ref_type == 'branch' && startsWith(github.ref_name, 'pkg_'))
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
@@ -43,13 +40,9 @@ jobs:
       - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5.5.0
         with:
           go-version-file: go.mod
-      # The branch is passed only for a create event. An empty argument means the
-      # same as none: every package branch is listed and whatever the catalogue
-      # doesn't have is added.
       - run: |
-          go run ./cmd/ar2 index "$BRANCH" \
+          go run ./cmd/ar2 index \
             --g2-owner "${GITHUB_REPOSITORY%/*}" \
             --g2-repo "${GITHUB_REPOSITORY#*/}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          BRANCH: ${{ github.event_name == 'create' && github.ref_name || '' }}
