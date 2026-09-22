@@ -25,6 +25,10 @@ permissions: {}
 jobs:
   index:
     runs-on: ubuntu-24.04
+    # Its own environment, holding the pull request key alone. This workflow never
+    # creates a package branch, so it has no business reaching the key that bypasses
+    # the ruleset guarding them.
+    environment: index
     timeout-minutes: 15
     permissions:
       # Committing the catalogue to the update branch.
