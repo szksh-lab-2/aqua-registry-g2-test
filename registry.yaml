@@ -1,0 +1,15 @@
+type: github_release
+repo_owner: AvitalTamir
+repo_name: cyphernetes
+description: A Kubernetes Query Language
+version_overrides:
+  - version_constraint: Version == "v0.2"
+  - version_constraint: semver("> 0.12.1")
+  - version_constraint: semver("> 0.10.0")
+  - version_constraint: semver("> 0.8.1")
+  - version_constraint: semver("> 0.6.4-fix.0")
+  - version_constraint: semver("> 0.1")
+  - version_constraint: semver("<= 0.1")
+    replacements:
+      darwin: macos
+  - version_constraint: "true"
