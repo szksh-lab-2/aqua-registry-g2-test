@@ -11,10 +11,6 @@ on:
         description: how many package versions to generate in this run
         required: false
         default: "2"
-      ar2_ref:
-        description: the ar2 ref to build
-        required: false
-        default: main
       log_level:
         description: how much the run says about what it is doing
         required: false
@@ -40,13 +36,15 @@ jobs:
       # since, so 'ar2 init' isn't part of a scheduled run.
       packages: write
     steps:
+      # For aqua/aqua.yaml, which pins the ar2 version and its checksum. The
+      # repository is only read here; ar2 does its own writing through the API with
+      # the tokens below, so the checkout keeps no credentials.
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
         with:
-          repository: aquaproj/ar2
-          ref: ${{ inputs.ar2_ref }}
-      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5.5.0
+          persist-credentials: false
+      - uses: aquaproj/aqua-installer@11dd79b4e498d471a9385aa9fb7f62bb5f52a73c # v4.0.4
         with:
-          go-version-file: go.mod
+          aqua_version: v2.63.0
       # A separate token for creating package branches. Creating one has to get
       # past the ruleset requiring status checks, which a brand new branch can't
       # have; this app is a bypass actor for that ruleset. It holds no
@@ -68,7 +66,7 @@ jobs:
           app-id: ${{ vars.AR2_PR_CLIENT_ID }}
           private-key: ${{ secrets.AR2_PR_PRIVATE_KEY }}
       - run: |
-          go run ./cmd/ar2 run \
+          ar2 run \
             --log-level "$LOG_LEVEL" \
             --limit "$LIMIT" \
             --g2-owner "${GITHUB_REPOSITORY%/*}" \
