@@ -30,6 +30,13 @@
     {
       "name": "Automattic/harper/harper-cli",
       "description": "The Grammar Checker for Developers"
+    },
+    {
+      "name": "Automattic/harper/harper-ls",
+      "description": "The Grammar Checker for Developers",
+      "aliases": [
+        "elijah-potter/harper/harper-ls"
+      ]
     }
   ]
 }
