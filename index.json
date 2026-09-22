@@ -37,6 +37,10 @@
       "aliases": [
         "elijah-potter/harper/harper-ls"
       ]
+    },
+    {
+      "name": "AvitalTamir/cyphernetes",
+      "description": "A Kubernetes Query Language"
     }
   ]
 }
