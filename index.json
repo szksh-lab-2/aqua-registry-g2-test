@@ -26,6 +26,10 @@
     },
     {
       "name": "Arriven/db1000n"
+    },
+    {
+      "name": "Automattic/harper/harper-cli",
+      "description": "The Grammar Checker for Developers"
     }
   ]
 }
