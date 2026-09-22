@@ -15,6 +15,10 @@ on:
         description: the ar2 ref to build
         required: false
         default: main
+      log_level:
+        description: how much the run says about what it is doing
+        required: false
+        default: info
 permissions: {}
 jobs:
   run:
@@ -59,6 +63,7 @@ jobs:
           private-key: ${{ secrets.AR2_PR_PRIVATE_KEY }}
       - run: |
           go run ./cmd/ar2 run \
+            --log-level "$LOG_LEVEL" \
             --limit "$LIMIT" \
             --g2-owner "${GITHUB_REPOSITORY%/*}" \
             --g2-repo "${GITHUB_REPOSITORY#*/}"
@@ -67,3 +72,4 @@ jobs:
           AR2_BRANCH_TOKEN: ${{ steps.branch_token.outputs.token }}
           AR2_PR_TOKEN: ${{ steps.pr_token.outputs.token }}
           LIMIT: ${{ inputs.limit }}
+          LOG_LEVEL: ${{ inputs.log_level }}
