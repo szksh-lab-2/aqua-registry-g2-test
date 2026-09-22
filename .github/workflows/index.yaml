@@ -16,11 +16,6 @@ name: index
 # main and would never be there, so the event fires and nothing runs.
 on:
   workflow_dispatch:
-    inputs:
-      ar2_ref:
-        description: the ar2 ref to build
-        required: false
-        default: main
 permissions: {}
 jobs:
   index:
@@ -36,14 +31,13 @@ jobs:
       # Opening the pull request.
       pull-requests: write
     steps:
+      # For aqua/aqua.yaml, which pins the ar2 version and its checksum.
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
         with:
-          repository: aquaproj/ar2
-          ref: ${{ inputs.ar2_ref || 'main' }}
           persist-credentials: false
-      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5.5.0
+      - uses: aquaproj/aqua-installer@11dd79b4e498d471a9385aa9fb7f62bb5f52a73c # v4.0.4
         with:
-          go-version-file: go.mod
+          aqua_version: v2.63.0
       # The token that commits the catalogue and opens its pull request. A pull
       # request opened or updated with GITHUB_TOKEN gets its checks in an
       # approval-required state, and this one is added to on every run.
@@ -53,7 +47,7 @@ jobs:
           app-id: ${{ vars.AR2_PR_CLIENT_ID }}
           private-key: ${{ secrets.AR2_PR_PRIVATE_KEY }}
       - run: |
-          go run ./cmd/ar2 index \
+          ar2 index \
             --g2-owner "${GITHUB_REPOSITORY%/*}" \
             --g2-repo "${GITHUB_REPOSITORY#*/}"
         env:
