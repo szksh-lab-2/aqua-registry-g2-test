@@ -1,0 +1,46 @@
+{
+  "packages": [
+    {
+      "name": "1xyz/pryrite",
+      "description": "Pryrite, interactively execute shell code blocks in a markdown file"
+    },
+    {
+      "name": "Adembc/lazyssh",
+      "description": "A terminal-based SSH manager inspired by lazydocker and k9s - Written in go"
+    },
+    {
+      "name": "AlexNabokikh/tfsort",
+      "description": "A CLI utility to sort Terraform variables and outputs"
+    },
+    {
+      "name": "AlexanderGrooff/mermaid-ascii",
+      "description": "Render Mermaid graphs inside your terminal"
+    },
+    {
+      "name": "Aloxaf/silicon",
+      "description": "Create beautiful image of your source code"
+    },
+    {
+      "name": "Arata1202/ascdir",
+      "description": "Manage App Store Connect metadata, TestFlight distribution, and releases with safe CLI workflows"
+    },
+    {
+      "name": "Arriven/db1000n"
+    },
+    {
+      "name": "Automattic/harper/harper-cli",
+      "description": "The Grammar Checker for Developers"
+    },
+    {
+      "name": "Automattic/harper/harper-ls",
+      "description": "The Grammar Checker for Developers",
+      "aliases": [
+        "elijah-potter/harper/harper-ls"
+      ]
+    },
+    {
+      "name": "AvitalTamir/cyphernetes",
+      "description": "A Kubernetes Query Language"
+    }
+  ]
+}
